@@ -46,7 +46,7 @@ namespace BigDataTask
 
         public void ReadMovieCodes()
         {
-            sr = new StreamReader(@"E:\Programs\reps\BigDataTask\BigDataTask\MovieCodes_IMDB.tsv");
+            sr = new StreamReader(@"C:\Users\Дмитрий\Desktop\BigDataTask\BigDataTask\MovieCodes_IMDB.tsv");
             String data;
             _ = sr.ReadLine();
             while (!((data = sr.ReadLine()) == null))
@@ -83,7 +83,7 @@ namespace BigDataTask
 
         public void ActorsDirectorsNameRead()
         {
-            StreamReader sr = new StreamReader(@"E:\Programs\reps\BigDataTask\BigDataTask\ActorsDirectorsNames_IMDB.txt");
+            StreamReader sr = new StreamReader(@"C:\Users\Дмитрий\Desktop\BigDataTask\BigDataTask\ActorsDirectorsNames_IMDB.txt");
             _ = sr.ReadLine();
             String data;
             while (!((data = sr.ReadLine()) == null))
@@ -98,7 +98,7 @@ namespace BigDataTask
 
         public void ActorsDirectorsCodesRead()
         {
-            StreamReader sr = new StreamReader(@"E:\Programs\reps\BigDataTask\BigDataTask\ActorsDirectorsCodes_IMDB.tsv");
+            StreamReader sr = new StreamReader(@"C:\Users\Дмитрий\Desktop\BigDataTask\BigDataTask\ActorsDirectorsCodes_IMDB.tsv");
             _ = sr.ReadLine();
             String data;
             while (!((data = sr.ReadLine()) == null))
@@ -106,7 +106,9 @@ namespace BigDataTask
                 var parsed = data.Split('\t');
                 if (NameByIdMovie.ContainsKey(parsed[0]))
                 {
-                    if (NameByIdPerson.ContainsKey(parsed[2]))
+                    if ((NameByIdPerson.ContainsKey(parsed[2])) && (parsed[4] == "actor" || parsed[4] == "actress" ||
+                        parsed[3] == "actor" || parsed[3] == "actress" ||
+                        parsed[4] == "director" || parsed[3] == "director"))
                     {
                         var name = NameByIdPerson[parsed[2]];
                         if (MovieByPerson.ContainsKey(name))
@@ -135,7 +137,7 @@ namespace BigDataTask
 
         public void RatingsRead()
         {
-            StreamReader sr = new StreamReader(@"E:\Programs\reps\BigDataTask\BigDataTask\Ratings_IMDB.tsv");
+            StreamReader sr = new StreamReader(@"C:\Users\Дмитрий\Desktop\BigDataTask\BigDataTask\Ratings_IMDB.tsv");
             var title = sr.ReadLine();
             String data;
             while (!((data = sr.ReadLine()) == null))
@@ -150,7 +152,7 @@ namespace BigDataTask
 
         public void LinksRead()
         {
-            StreamReader sr = new StreamReader(@"E:\Programs\reps\BigDataTask\BigDataTask\links_IMDB_MovieLens.csv");
+            StreamReader sr = new StreamReader(@"C:\Users\Дмитрий\Desktop\BigDataTask\BigDataTask\links_IMDB_MovieLens.csv");
             var title = sr.ReadLine();
             String data;
             while (!((data = sr.ReadLine()) == null))
@@ -164,7 +166,7 @@ namespace BigDataTask
 
         public void TagScores()
         {
-            StreamReader sr = new StreamReader(@"E:\Programs\reps\BigDataTask\BigDataTask\TagScores_MovieLens.csv");
+            StreamReader sr = new StreamReader(@"C:\Users\Дмитрий\Desktop\BigDataTask\BigDataTask\TagScores_MovieLens.csv");
             _ = sr.ReadLine();
             String data;
             while (!((data = sr.ReadLine()) == null))
@@ -194,7 +196,7 @@ namespace BigDataTask
 
         public void TagCodes()
         {
-            StreamReader sr = new StreamReader(@"E:\Programs\reps\BigDataTask\BigDataTask\TagCodes_MovieLens.csv");
+            StreamReader sr = new StreamReader(@"C:\Users\Дмитрий\Desktop\BigDataTask\BigDataTask\TagCodes_MovieLens.csv");
             var title = sr.ReadLine();
             String data;
             while (!((data = sr.ReadLine()) == null))
