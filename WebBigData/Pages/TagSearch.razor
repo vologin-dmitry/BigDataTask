@@ -1,0 +1,57 @@
+﻿@page "/tag"
+@page "/tag/{TagName}"
+
+<h1>Search tag by name</h1>
+<input placeholder="Name" @bind="Name" />
+<button @onclick="FindTag">Find</button>
+
+@if (TagName != null)
+{
+    @if (!isClicked)
+    {
+        FindTag();
+        isClicked = false;
+    }
+    @if (tags.Count != 0)
+    {
+        @foreach (var tag in tags)
+        {
+            <p>
+                <b>Имя: </b>@tag.Name
+            </p>
+            moviesSplitted = tag.Films.Split("\t");
+            <p>
+                <b>Фильмы: </b>
+                @foreach (var mov in moviesSplitted)
+                {
+                    @if (mov != "")
+                    {
+                        <a href="movie/@mov">@mov</a><text>, </text>
+                    }
+                }
+            </p>
+        }
+    }
+    isClicked = false;
+}
+
+@code {
+    [Parameter]
+    public string TagName { get; set; }
+
+    private List<Tag> tags = new List<Tag>();
+    private String Name;
+    private DataBaseWorker worker = new DataBaseWorker();
+    private string[] moviesSplitted;
+    private bool isClicked = false;
+
+    private void FindTag()
+    {
+        tags = new List<Tag>();
+        if (!String.IsNullOrWhiteSpace(TagName))
+        {
+            tags = worker.GetTag(TagName);
+        }
+        isClicked = true;
+    }
+}

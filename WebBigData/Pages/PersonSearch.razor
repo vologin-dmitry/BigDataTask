@@ -1,0 +1,60 @@
+﻿@page "/person"
+@page "/person/{ActorName}"
+
+<h1>Search person by name</h1>
+<input placeholder="Name" @bind="ActorName" />
+<button @onclick="FindPerson">Find</button>
+
+@if (ActorName != null)
+{
+    @if (!isClicked)
+    {
+        FindPerson();
+        isClicked = false;
+    }
+    @if (people.Count != 0)
+    {
+        @foreach (var per in people)
+        {
+            <p>
+                <b>Имя:</b>@per.Name
+            </p>
+            splittedMovies = per.Films.Split("\t");
+            <p>
+                <b>Фильмы: </b>
+                @foreach(var mov in splittedMovies)
+                {
+                    @if (mov != "")
+                    {
+                        <a href="movie/@mov">@mov</a><text>, </text>
+                    }
+                }
+            </p>
+        }
+    }
+    else
+    {
+        <p>Таких не найдено</p>
+    }
+}
+
+@code {
+
+    [Parameter]
+    public string ActorName { get; set; }
+
+    private List<Person> people = new List<Person>();
+    private DataBaseWorker worker = new DataBaseWorker();
+    private string[] splittedMovies;
+    private bool isClicked = false;
+
+    private void FindPerson()
+    {
+        people = new List<Person>();
+        if (!String.IsNullOrWhiteSpace(ActorName))
+        {
+            people = worker.GetPerson(ActorName);
+        }
+        isClicked = true;
+    }
+}

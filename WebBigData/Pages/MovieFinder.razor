@@ -1,0 +1,109 @@
+﻿@page "/movie"
+@page "/movie/{MovieName}"
+
+<h1>Films</h1>
+<input placeholder="Name" @bind="MovieName" />
+<button @onclick="FindMovie">Find</button>
+
+@if (MovieName != null)
+{
+    @if (!isClicked)
+    {
+        FindMovie();
+    }
+    @if (films.Count != 0)
+    {
+        @foreach (var mov in films)
+        {
+            if (DataBaseReader.LinksIMDB.ContainsKey(mov.Code))
+            {
+                mov.TMBD = DataBaseReader.LinksIMDB[mov.Code];
+                var stf = new WebStuff(mov);
+                actorsParsed = mov.Actors.Split("\t");
+                tagsParsed = mov.Tags.Split("\t");
+                <p>
+                    <h2><b>@mov.Name</b></h2><br>
+                    <img src=@stf.GetImage()>
+                </p>
+                <p>
+                    <b>Рейтинг: </b>@mov.Rating
+                </p>
+                <p>
+                    <b>Режисер: </b><a href="person/@mov.Director">@mov.Director</a>
+                </p>
+                <p>
+                    <b>Актеры: </b><br />
+                    @foreach (var act in actorsParsed)
+                    {
+                        if (act != "")
+                        {
+                            <a href="person/@act">@act</a><text>, </text>
+                        }
+                    }
+                </p>
+                <p>
+                    <b>Тэги: </b>
+                    @foreach (var tag in tagsParsed)
+                    {
+                        if (tag != "")
+                        {
+                            <a href="tag/@tag">@tag</a><text>, </text>
+                        }
+                    }
+                </p>
+                <p>
+                    <b>Описание: </b>@stf.GetInfo()
+                </p>
+                temp = @stf.Alike();
+                parsed = @temp.Split("\n");
+                <b>Рекомендации:</b>
+                <br />
+                <div>
+                    @foreach (var movie in parsed)
+                    {
+                        @if (movie != "")
+                        {
+                            titleName = movie.Split("\t");
+                            if (titleName.Count() == 2)
+                            {
+                                <div><img src=@titleName[0]><br /> <a href="movie/@titleName[1]">@titleName[1]</a></div>
+                            }
+                        }
+                    }
+                </div>
+                <br />
+            }
+        }
+    }
+    else
+    {
+        <p>Таких не найдено</p>
+    }
+    isClicked = false;
+}
+
+
+
+@code {
+    [Parameter]
+    public string MovieName { get; set; }
+
+    private List<Movie> films = new List<Movie>();
+    private string temp;
+    private string[] parsed;
+    private string[] titleName;
+    private string[] actorsParsed;
+    private string[] tagsParsed;
+    private DataBaseWorker worker = new DataBaseWorker();
+    private bool isClicked = false;
+
+    private void FindMovie()
+    {
+        films = new List<Movie>();
+        if (!String.IsNullOrWhiteSpace(MovieName))
+        {
+            films = worker.GetMovie(MovieName);
+        }
+        isClicked = true;
+    }
+}
