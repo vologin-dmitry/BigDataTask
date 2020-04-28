@@ -23,7 +23,7 @@
                 tagsParsed = mov.Tags.Split("\t");
                 <p>
                     <h2><b>@mov.Name</b></h2><br>
-                    <img src=@stf.GetImage()>
+                    <img src=@stf.Image>
                 </p>
                 <p>
                     <b>Рейтинг: </b>@mov.Rating
@@ -52,23 +52,14 @@
                     }
                 </p>
                 <p>
-                    <b>Описание: </b>@stf.GetInfo()
+                    <b>Описание: </b>@stf.Info
                 </p>
-                temp = @stf.Alike();
-                parsed = @temp.Split("\n");
                 <b>Рекомендации:</b>
                 <br />
                 <div>
-                    @foreach (var movie in parsed)
+                    @foreach (var movie in stf.alike)
                     {
-                        @if (movie != "")
-                        {
-                            titleName = movie.Split("\t");
-                            if (titleName.Count() == 2)
-                            {
-                                <div><img src=@titleName[0]><br /> <a href="movie/@titleName[1]">@titleName[1]</a></div>
-                            }
-                        }
+                        <div><img src=@movie.Item2><br /> <a href="movie/@movie.Item1">@movie.Item1</a></div>
                     }
                 </div>
                 <br />
@@ -90,8 +81,6 @@
 
     private List<Movie> films = new List<Movie>();
     private string temp;
-    private string[] parsed;
-    private string[] titleName;
     private string[] actorsParsed;
     private string[] tagsParsed;
     private DataBaseWorker worker = new DataBaseWorker();

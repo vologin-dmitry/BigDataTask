@@ -2,7 +2,7 @@
 @page "/tag/{TagName}"
 
 <h1>Search tag by name</h1>
-<input placeholder="Name" @bind="Name" />
+<input placeholder="Name" @bind="TagName" />
 <button @onclick="FindTag">Find</button>
 
 @if (TagName != null)
@@ -40,7 +40,6 @@
     public string TagName { get; set; }
 
     private List<Tag> tags = new List<Tag>();
-    private String Name;
     private DataBaseWorker worker = new DataBaseWorker();
     private string[] moviesSplitted;
     private bool isClicked = false;
